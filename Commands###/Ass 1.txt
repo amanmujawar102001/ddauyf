@@ -1,0 +1,33 @@
+df = pd.read_csv('dataset_Facebook.csv', sep=';')
+
+df.head()
+
+df.info()
+
+## Create data subset ##
+
+subset1 = df.loc[1:5,['like','share']]
+print(subset1)
+
+
+subset2 = df.loc[1:5,['Category','comment']]
+print(subset2)
+
+### merge ###
+
+merge_set = pd.concat([subset1, subset2], axis=0)
+print(merge_set)
+
+## Sorting ##
+
+df.sort_values(by='like',ascending=True)
+
+### Data Transposing ##
+
+result= df.transpose()
+print(result)
+
+## Reshape ##
+
+subset1 = df.loc[1:5,['like','share']]
+subset1.melt(id_vars=['like'])

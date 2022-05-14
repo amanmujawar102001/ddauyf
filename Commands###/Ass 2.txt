@@ -1,0 +1,65 @@
+df.head(5)
+
+df.describe()
+
+df.shape
+
+df.info()
+
+df.isnull().sum()
+
+df.count()
+
+df.describe()
+
+### Data Cleaning ###
+
+df = df.drop(['stn_code','agency', 'location_monitoring_station'],axis=1)  
+
+df.isna().sum()
+
+df = df.dropna(subset=['date'])
+
+df.isna().sum()
+
+### Data Transformation ###
+
+df.nunique()
+
+df.duplicated().sum()
+
+df.drop_duplicates()
+
+### EROR Correction ###
+
+df.isnull().sum()
+
+df=df.fillna(df.median())
+
+df.isnull().sum()
+
+### Data Model Building ###
+
+from sklearn.model_selection import train_test_split
+from sklearn import svm
+from sklearn.metrics import classification_report,confusion_matrix,accuracy_score
+
+X = df.drop('target', axis=1)
+y = df.target
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=1)
+
+from sklearn import svm
+
+
+clf = svm.SVC(kernel='linear')
+clf.fit(X_train, y_train)
+y_pred = clf.predict( X_test)
+
+
+from sklearn import metrics
+accuracy = metrics.accuracy_score(y_test, y_pred)
+print("Accuracy:", accuracy)
+
+
+print("Precision:",metrics.precision_score(y_test, y_pred))
+print("Recall:",metrics.recall_score(y_test, y_pred))

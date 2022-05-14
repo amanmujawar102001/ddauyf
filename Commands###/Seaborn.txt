@@ -1,0 +1,93 @@
+1 import  matplotlib.pyplot as plt
+  from matplotlib.figure import Figure
+  import pandas as pd
+  import seaborn as sns
+  import numpy as np
+
+
+2 df = pd.read_csv('dataset_Facebook.csv',sep=';')
+  df.head(5)
+
+3 ts = df.groupby('Type')['share'].sum()
+  ts 
+
+4 ts.plot.pie(label=('Type'), title = " PIE CHART WITH PERCENTAGE",colormap='brg', autopct='%1.0f%%')
+
+5 ts = df.groupby('Type')['like'].sum()
+  ts
+
+6 ts.plot.pie(label=('Type'), title = " PIE CHART WITH PERCENTAGE",colormap='brg', autopct='%1.0f%%')
+
+7 ts = pd.pivot_table(df, index=['Type'], columns=['Paid'], values=['share'], aggfunc='count')
+  ts
+
+8 plt.figure(); 
+  ts.plot.pie(title='MULTIPLE PIE CHARTS', colors=['darkcyan','orange','yellowgreen'],autopct='%.1f%%', subplots=True) 
+
+9 x=df['Type']
+  y=df['share']
+
+
+
+10 plt.bar(x,y)
+   plt.xlabel('Type')
+   plt.ylabel('Total Share')
+   plt.show
+
+11 plt.figure(figsize=(7,7))
+
+12 objects = ('January', 'February', 'March', 'April','May','June','July','August','September','October','November','December')
+   y_pos = np.arange(len(objects))
+
+13 plt.bar(y_pos, df.loc[:,'Post Month'].value_counts().values)
+   plt.xticks(y_pos, objects, rotation=70)
+   plt.ylabel('Number of posts')
+   plt.title('Number of posts for each month')
+
+14 plt.figure(figsize=(7,7))
+
+15 objects = ('Monday', 'Tuesday', 'Wednesday', 'Thursday','Friday','Saturday','Sunday')
+   y_pos = np.arange(len(objects))
+
+16 plt.bar(y_pos, df.loc[:,'Post Weekday'].value_counts().values)
+   plt.xticks(y_pos, objects, rotation=70)
+   plt.ylabel('Number of posts')
+   plt.title('Number of posts for each weekday')
+
+17 plt.figure(figsize=(5,5))
+   sns.countplot(x='Post Month',hue='Paid',data=df)
+   plt.title("Number of posts: Free vs Paid per Month")
+
+18 plt.figure(figsize=(5,5)) 
+   sns.countplot(x='Post Weekday',hue='Paid',data=df)
+   plt.title("Number of posts: Free vs Paid per Weekday")
+
+19 plt.figure(figsize=(8,6))
+  sns.countplot(x='Category',data=df,palette='viridis')
+  plt.ylabel("# of Likes")
+  plt.title("Number of Likes vs. Post Category")
+  plt.savefig('catCount.png', bbox_inches='tight')
+
+20 plt.figure(figsize=(10,6))
+   sns.countplot(x='Type',data=df,palette='viridis')
+   plt.title("Number of Posts by Type")
+   plt.ylabel("# of likes")
+   plt.savefig('typeCount.png', bbox_inches='tight')
+
+21 plt.figure(figsize=(10,6))
+   sns.countplot(x='Paid',data=df,palette='viridis')
+   plt.title("likes/Post by Paid/Non-Paid Posts")
+   plt.ylabel("# of Posts")
+   plt.savefig('paidCount.png', bbox_inches='tight')
+
+22 plt.figure(figsize=(14,8))
+   sns.distplot(df[df['like']<1000]['like'],bins=20,color='dodgerblue',hist_kws={'alpha':0.6})
+   plt.xlim(0,1000)
+   plt.xlabel("# of Likes",fontsize=15)
+   plt.ylabel('Frequency',fontsize=15)
+   plt.title('Distribution of Like/Post',fontsize=20)
+
+23 sns.distplot(df['Page total likes'],bins=20)
+   plt.title("Distribution of Total Page Likes")
+
+24 sns.countplot(df['Post Month'],palette='viridis')
